@@ -19,7 +19,7 @@ async function start() {
 function createBreedList(breedList) {
     document.getElementById("breed").innerHTML = `
     <select onchange="loadByBreed(this[this.selectedIndex].id)">
-        <option>Random cat pictures</option>
+        <option>Choose a cat breed!</option>
         ${breedList.map(function (breed) {
             return `<option id=${breed.id}>${breed.name}</option>`
         }).join('')}
@@ -28,7 +28,7 @@ function createBreedList(breedList) {
 }
 
 async function loadByBreed(breed){
-    if (breed != "Random cat pictures") {
+    if (breed != "Choose a cat breed!") {
         const response = await fetch(`https://api.thecatapi.com/v1/images/search?limit=100&breed_ids=${breed}`)
         const data = await response.json()
         createSlideshow(data)
