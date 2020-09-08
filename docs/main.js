@@ -12,12 +12,14 @@ async function start() {
     } catch (e) {
         console.log("There was a problem fetching the breed list.")
     }
+
+    play_random_cats()
 }
-//onchange="loadByBreed(this.value)"
+
 function createBreedList(breedList) {
     document.getElementById("breed").innerHTML = `
     <select onchange="loadByBreed(this[this.selectedIndex].id)">
-        <option>Choose a cat breed</option>
+        <option>Random cat pictures</option>
         ${breedList.map(function (breed) {
             return `<option id=${breed.id}>${breed.name}</option>`
         }).join('')}
@@ -26,11 +28,21 @@ function createBreedList(breedList) {
 }
 
 async function loadByBreed(breed){
-    if (breed != "") {
+    if (breed != "Random cat pictures") {
         const response = await fetch(`https://api.thecatapi.com/v1/images/search?limit=100&breed_ids=${breed}`)
         const data = await response.json()
         createSlideshow(data)
+    } else {
+        const response = await fetch(`https://api.thecatapi.com/v1/images/search?limit=100`)
+        const data = await response.json()
+        createSlideshow(data)
     }
+}
+
+async function play_random_cats(){
+    const response = await fetch(`https://api.thecatapi.com/v1/images/search?limit=100`)
+    const data = await response.json()
+    createSlideshow(data)
 }
 
 function createSlideshow(images){
@@ -69,3 +81,4 @@ function createSlideshow(images){
 }
 
 start()
+
